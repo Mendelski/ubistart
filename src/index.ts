@@ -1,12 +1,22 @@
-import 'reflect-metadata';
-import express from 'express';
-
+import { Application } from './app';
 import './database/connect';
-import routes from "./routes";
 
-const app = express();
+enum ExitStatus {
+    Failure = 1,
+    Success = 0,
+}
 
-app.use(express.json());
-app.use(routes)
+const port = Number(process.env.PORT ?? 3000);
+const app = new Application();
 
-app.listen(3000, () => console.log('Server started'));
+process.on('unhandledRejection', (reason, promise) => {
+    console.error(`App exiting due to an unhandled promise: ${promise} and reason: ${reason}`, reason);
+    throw reason;
+});
+
+process.on('uncaughtException', (error) => {
+    console.error(`App exiting due to an uncaught exception: ${error}`);
+    process.exit(ExitStatus.Failure);
+});
+
+app.start(port);
