@@ -19,9 +19,6 @@
     "outDir": "./dist",
     "rootDir": "./",
     "baseUrl": ".",
-    "paths": {
-      "@src/*": ["./src/*"]
-    },
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "strictPropertyInitialization": false,
