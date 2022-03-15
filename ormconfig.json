@@ -6,7 +6,7 @@
   "password": "root",
   "database": "ubi_test",
   "entities": [
-    "src/app/models/*.ts"
+    "src/app/common/models/*.ts"
   ],
   "migrations": [
     "src/database/migrations/*.ts"
