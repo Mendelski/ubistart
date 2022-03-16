@@ -2,8 +2,9 @@ require('dotenv/config');
 
 import { Server } from '@overnightjs/core';
 import express from 'express';
-import { TodoController } from './app/user/controllers/TodoController';
-import { UserController } from './app/user/controllers/UserController';
+import TodoController from './app/user/controllers/TodoController';
+import UserController from './app/user/controllers/UserController';
+import AdminTodoController from './app/admin/controllers/TodoController';
 
 export class Application extends Server {
     constructor() {
