@@ -12,21 +12,22 @@ Para instalar as dependências definidas em package.json, execute:
 
 
 ## Configuração do MySQL
-
-No arquivo ormconfig.json temos as variáveis de configuração do banco de dados, 
-defina abaixo os valores conforme seu ambiente
+No arquivo ormconfig.ts temos as variáveis de configuração do banco de dados, defina os valores conforme seu ambiente
+no arquivo .env de acordo com as variáveis exibidas abaixo:
 
 ```
-"host": "localhost", 
-"port": 3306,
-"username": "root",
-"password": "root",
-"database": "test_ubistart",
+{
+    host: process.env.DB_HOST ?? 'localhost',
+    port: process.env.DB_PORT ?? 3306,
+    username: process.env.DB_USERNAME ?? 'root',
+    password: process.env.DB_PASSWORD ?? 'root',
+    database: process.env.DB_DATABASE ?? 'test_ubistart',
+}
 ``` 
 
 Após configurar o orm para a conexão com o banco, precisaremos criar o schema, e o resto a parte de migrations se encarrega de fazer por nós.
 
-para criar o schema, digite:
+para criar o schema, no terminal mysql digite:
 
 `create schema test_ubistart;`
 
@@ -39,7 +40,6 @@ Após o schema criado e tudo configurado, execute a migration:
 
 yarn typeorm é uma maneira de executar a migration do projeto, se for necessário alterar, basta mudar o script definido no pac
 kage.json 
-
 
 ## Iniciando o projeto
 
