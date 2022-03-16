@@ -7,7 +7,7 @@ export class CreateUserAdmin1647290880587 implements MigrationInterface {
         const repository = getRepository(User);
 
         const admin = repository.create({
-            email: 'admin@admin.com',
+            email: 'admin@ubistart.com',
             password: 'admin',
             role: UserRole.ADMIN,
         });
