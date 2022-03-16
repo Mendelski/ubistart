@@ -61,3 +61,292 @@ yarn dev
 
 ## Primeiro Acesso
 O admin default é criado com o email `admin@ubistart.com` e a senha `admin`
+
+
+# Rotas da api 
+
+## Endpoint genérico
+
+### Autenticação
+Todas as rotas exceto Cadastro e Login exigem o uso de JWT token da seguinte forma:
+```
+HEADER
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJ1c2VyQHViaXN0YXJ0LmNvbSIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNjQ3NDQ0MDYwLCJleHAiOjE2NDc1MzA0NjB9.tUdskQp10nu7ZMoA-7oWONHkbwB045OLC-YLi3-laKk
+```
+
+### Login
+Request
+
+```
+POST /login
+```
+```
+{ "email": "user@ubistart.com", "password": "myPassword" }
+```
+
+Response
+```
+{
+	"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJ1c2VyQHViaXN0YXJ0LmNvbSIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNjQ3NDQ0MDYwLCJleHAiOjE2NDc1MzA0NjB9.tUdskQp10nu7ZMoA-7oWONHkbwB045OLC-YLi3-laKk"
+}
+```
+
+## Escopo do user
+
+### Cadastro de user
+Request
+
+```
+POST /register
+```
+```
+{ "email": "user@ubistart.com", "password": "myPassword" }
+```
+
+Response
+```
+{ "email": "user@ubistart.com", "password": "myPassword" }
+```
+
+### Criação de TODO
+Request
+
+```
+POST /todos
+```
+```
+{
+	"title": "Entregar o teste",
+	"description": "Entregar o teste com sucesso",
+	"dueDate": "2022-03-16"
+}
+```
+
+Response
+```
+{
+    "createdAt": "2022-03-14 12:03:35",
+    "description": "Entregar o teste a qualquer hora do dia",
+    "dueDate": "2022-03-16 23:59:59",
+    "id": 1,
+    "status": "OPEN",
+    "title": "Entregar o teste",
+    "updatedAt": "2022-03-16 12:09:12",
+    "user": {
+        "email": "user@ubistart.com"
+    }
+}
+```
+
+### Listagem de todos os TODOs
+Request
+
+```
+GET /todos
+```
+
+Response
+```
+[
+	{
+		"createdAt": "2022-03-14 12:03:35",
+		"description": "Entregar o teste a qualquer hora do dia",
+		"dueDate": "2022-03-16 23:59:59",
+		"id": 1,
+		"status": "OPEN",
+		"title": "Entregar o teste",
+		"updatedAt": "2022-03-16 12:09:12",
+		"user": {
+			"email": "user@ubistart.com"
+		}
+	}
+]
+```
+
+### Pegar um TODO
+Request
+
+```
+GET /todos/1
+```
+
+Response
+```
+{
+    "createdAt": "2022-03-14 12:03:35",
+    "description": "Entregar o teste a qualquer hora do dia",
+    "dueDate": "2022-03-16 23:59:59",
+    "id": 1,
+    "status": "OPEN",
+    "title": "Entregar o teste",
+    "updatedAt": "2022-03-16 12:09:12",
+    "user": {
+        "email": "user@ubistart.com"
+    }
+}
+```
+
+### Edição de TODO
+Request
+
+```
+PATCH /todos/1
+```
+```
+{
+	"title": "Título atualizado"
+}
+
+```
+
+Response
+```
+{
+    "createdAt": "2022-03-14 12:03:35",
+    "description": "Entregar o teste a qualquer hora do dia",
+    "dueDate": "2022-03-16 23:59:59",
+    "id": 1,
+    "status": "OPEN",
+    "title": "Título atualizado",
+    "updatedAt": "2022-03-16 12:09:12",
+    "user": {
+        "email": "user@ubistart.com"
+    }
+}
+```
+
+
+### Marcar como concluído
+Request
+
+```
+POST /todos/1/finish
+```
+
+Response
+```
+{
+    "createdAt": "2022-03-14 12:03:35",
+    "description": "Entregar o teste a qualquer hora do dia",
+    "dueDate": "2022-03-16 23:59:59",
+    "id": 1,
+    "status": "TODO",
+    "title": "Título atualizado",
+    "updatedAt": "2022-03-16 12:09:12",
+    "user": {
+        "email": "user@ubistart.com"
+    }
+}
+```
+
+
+## Rotas de Admin
+
+### Listar todos os TODOS
+Request
+
+```
+GET /admin/todos
+```
+
+Response 
+```
+[
+    {
+        "createdAt": "2022-03-14 12:03:35",
+        "description": "Entregar o teste a qualquer hora do dia",
+        "dueDate": "2022-03-16 23:59:59",
+        "id": 1,
+        "status": "OPEN",
+        "title": "Entregar o teste",
+        "updatedAt": "2022-03-16 12:09:12",
+        "user": {
+            "email": "user@ubistart.com"
+        }
+    }
+]
+```
+
+### Pegar um TODO
+Request
+
+```
+GET /admin/todos/1
+```
+
+Response 
+
+```
+{
+    "createdAt": "2022-03-14 12:03:35",
+    "description": "Entregar o teste a qualquer hora do dia",
+    "dueDate": "2022-03-16 23:59:59",
+    "id": 1,
+    "status": "OPEN",
+    "title": "Entregar o teste",
+    "updatedAt": "2022-03-16 12:09:12",
+    "user": {
+        "email": "user@ubistart.com"
+    }
+}
+```
+
+
+### Atualizar um TODO
+Request
+
+```
+PATCH /admin/todos/1
+```
+
+```
+{
+	"title": "Titulo atualizado"
+}
+```
+
+Response
+
+```
+[
+	{
+		"createdAt": "2022-03-14 12:03:35",
+		"description": "Entregar o teste a qualquer hora do dia",
+		"dueDate": "2022-03-16 23:59:59",
+		"id": 1,
+		"status": "OPEN",
+		"title": "Titulo atualizado",
+		"updatedAt": "2022-03-16 12:09:12",
+		"user": {
+			"email": "user@ubistart.com"
+		}
+	}
+]
+``` 
+
+
+### Finalizar um TODO
+Request
+
+```
+POST /admin/todos/1/finish
+```
+
+Response 
+
+```
+[
+	{
+		"createdAt": "2022-03-14 12:03:35",
+		"description": "Entregar o teste a qualquer hora do dia",
+		"dueDate": "2022-03-16 23:59:59",
+		"id": 1,
+		"status": "DONE",
+		"title": "Entregar o teste",
+		"updatedAt": "2022-03-16 12:09:12",
+		"user": {
+			"email": "user@ubistart.com"
+		}
+	}
+]
+``` 
