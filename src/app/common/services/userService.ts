@@ -1,14 +1,26 @@
 import { getRepository } from 'typeorm';
-import User from '../../common/models/user';
-import { UserRole } from '../../common/enums/userEnum';
-import { ResponseError } from '../../common/exceptions/responseError';
+import User from '../models/user';
+import { ResponseError } from '../exceptions/responseError';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import { UserDto } from '../../common/dtos/UserDto'
+import { UserDto } from '../dtos/UserDto';
+import validator from 'email-validator';
 
 class UserService {
-    async register(data: any) {
-        const { email, password } = data;
+    async register(data: { email: string, password: string, role: string }) {
+        const {
+            email,
+            password,
+            role,
+        } = data;
+
+        if (!email || !password || !role) {
+            throw ResponseError.INVALID_PARAMS;
+        }
+
+        if (!validator.validate(email)) {
+            throw ResponseError.INVALID_EMAIL;
+        }
 
         const repository = getRepository(User);
 
@@ -21,12 +33,16 @@ class UserService {
         const user = repository.create({
             email,
             password,
-            role: UserRole.USER,
+            role,
         });
 
         await repository.save(user);
 
-        return user;
+        const userDto = user as UserDto;
+
+        delete userDto.password;
+
+        return userDto;
     }
 
     async login(data: any) {
@@ -49,7 +65,7 @@ class UserService {
 
         delete user.password;
 
-        return jwt.sign(user as UserDto, process.env.JWT_SECRET ?? '', { expiresIn: '1d' });
+        return jwt.sign({ ...user }, process.env.JWT_SECRET ?? '', { expiresIn: '1d' });
     }
 }
 

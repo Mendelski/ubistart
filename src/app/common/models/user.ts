@@ -1,5 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn, BeforeInsert, BeforeUpdate } from 'typeorm';
+import { BeforeInsert, BeforeUpdate, Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { hash } from '../../../utils/bcrypt';
+import Todo from './todo';
 
 @Entity('users')
 class User {
@@ -14,6 +15,9 @@ class User {
 
     @Column()
     role: string;
+
+    @OneToMany(type => Todo, todo => todo.user)
+    todos: Todo[];
 
     @BeforeInsert()
     @BeforeUpdate()

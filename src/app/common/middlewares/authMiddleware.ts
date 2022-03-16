@@ -1,10 +1,8 @@
-import { Request, Response, NextFunction } from "express";
-import jwt from 'jsonwebtoken';
+import { NextFunction, Request, Response } from 'express';
+import jwt, { TokenExpiredError } from 'jsonwebtoken';
 import { DefaultMiddleware } from './defaultMiddleware';
 import { UserRole } from '../enums/userEnum';
 import { ResponseError } from '../exceptions/responseError';
-import { getRepository } from 'typeorm';
-import User from '../models/user';
 import { UserDto } from '../dtos/UserDto';
 
 class AuthMiddleware extends DefaultMiddleware {
@@ -22,6 +20,10 @@ class AuthMiddleware extends DefaultMiddleware {
 
             next();
         } catch (exception) {
+            if (exception instanceof TokenExpiredError) {
+                return this.handleException(req, res, ResponseError.ACCESS_FORBIDDEN);
+            }
+
             this.handleException(req, res, exception);
         }
     }
@@ -52,16 +54,6 @@ class AuthMiddleware extends DefaultMiddleware {
         } catch (exception) {
             this.handleException(req, res, exception);
         }
-    }
-
-    getUser = async (id: number) => {
-        const user = await getRepository(User).findOne({ id });
-
-        if (!user) {
-            throw ResponseError.USER_NOT_FOUND.addDetails({ id });
-        }
-
-        return user;
     }
 }
 

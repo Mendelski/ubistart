@@ -1,4 +1,4 @@
-import { BeforeInsert, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { BeforeInsert, BeforeUpdate, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import User from './user';
 import moment from 'moment';
 
@@ -25,7 +25,7 @@ class Todo {
     @Column('datetime')
     updatedAt: Date|string;
 
-    @ManyToOne(() => User)
+    @ManyToOne(type => User, user => user.todos)
     user: User;
 
     @BeforeInsert()

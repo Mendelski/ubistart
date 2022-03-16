@@ -1,12 +1,12 @@
 import { Request, Response } from 'express';
 import { ControllerExceptionHandler } from '../../common/decorators/ControllerExceptionHandlerDecorator';
-import todoService from '../services/todoService';
 import { Controller, Get, Middleware, Patch, Post } from '@overnightjs/core';
 import authMiddleware from '../../common/middlewares/authMiddleware';
 import todoMiddleware from '../middlewares/todoMiddleware';
+import todoService from '../services/todoService';
 
 @Controller('todos')
-export class TodoController {
+export default class TodoController {
     @Post()
     @Middleware(authMiddleware.auth)
     @Middleware(authMiddleware.authUser)

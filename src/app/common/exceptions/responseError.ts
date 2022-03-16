@@ -14,8 +14,8 @@ export class ResponseError extends Error {
     static INVALID_CREDENTIALS = new ResponseError('1000', 'Header apikey is required', 403);
     static ACCESS_FORBIDDEN = new ResponseError('1001', 'User do not has access to this resource', 403);
 
-    static USER_ALREADY_EXISTS = new ResponseError('2000', 'User with this email already exists', 403);
-    static USER_NOT_FOUND = new ResponseError('2001', 'User not found');
+    static USER_ALREADY_EXISTS = new ResponseError('2000', 'User with this email already exists');
+    static INVALID_EMAIL = new ResponseError('2001', 'Invalid email');
 
     static TODO_NOT_FOUND = new ResponseError('3000', 'Todo not found', 404);
     static TODO_FINISHED = new ResponseError('3001', 'Todo with finished status can not be edited');
