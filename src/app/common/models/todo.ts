@@ -30,16 +30,20 @@ class Todo {
 
     @BeforeInsert()
     beforeInsert() {
+        this.createdAt = this.dateFormat(new Date());
+        this.updatedAt = this.dateFormat(new Date());
+    }
+
+    @BeforeUpdate()
+    beforeUpdate() {
+        this.updatedAt = this.dateFormat(new Date());
+
         if (this.createdAt instanceof Date) {
             this.createdAt = this.dateFormat(this.createdAt);
         }
 
         if (this.dueDate instanceof Date) {
             this.dueDate = this.dateFormat(this.dueDate);
-        }
-
-        if (this.updatedAt instanceof Date) {
-            this.updatedAt = this.dateFormat(this.updatedAt);
         }
     }
 
