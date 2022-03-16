@@ -23,6 +23,7 @@ export class Application extends Server {
         super.addControllers([
             new TodoController(),
             new UserController(),
+            new AdminTodoController(),
         ]);
     }
 

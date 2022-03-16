@@ -8,5 +8,5 @@ export interface TodoDto {
     status: string;
     title: string;
     updatedAt: Date|string;
-    user?: User;
+    user?: User|any;
 }

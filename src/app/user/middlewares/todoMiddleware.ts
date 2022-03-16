@@ -15,13 +15,11 @@ class TodoMiddleware extends DefaultMiddleware {
             }
 
             res.locals.todoDto = {
-                createdAt: new Date(),
                 description,
                 dueDate: new Date(dueDate),
                 user: res.locals.auth,
                 status: TodoStatus.OPEN,
                 title,
-                updatedAt: new Date(),
             } as TodoDto;
 
             next();
@@ -40,7 +38,6 @@ class TodoMiddleware extends DefaultMiddleware {
 
             const todo = {
                 id: Number(req.params.id),
-                updatedAt: new Date(),
                 user: res.locals.auth,
             } as Partial<Todo>;
 
@@ -69,7 +66,6 @@ class TodoMiddleware extends DefaultMiddleware {
             res.locals.todoDto = {
                 id: Number(req.params.id),
                 status: TodoStatus.DONE,
-                updatedAt: new Date(),
                 user: res.locals.auth,
             } as Partial<Todo>;
 
@@ -81,11 +77,12 @@ class TodoMiddleware extends DefaultMiddleware {
 
     list = async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const { limit, offset } = req.query;
+            const { limit, offset, late } = req.query;
 
             res.locals.filter = {
                 limit,
                 offset,
+                late: late !== undefined,
                 user: res.locals.auth,
             };
 
@@ -97,10 +94,8 @@ class TodoMiddleware extends DefaultMiddleware {
 
     get = async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const { id: todoId } = req.params;
-
             res.locals.filter = {
-                id: todoId,
+                id: req.params.id,
                 user: res.locals.auth,
             };
 
